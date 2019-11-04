@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Register Attendee</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <script type ="text/javascript" src ="libraries/jquery-3.4.1.min.js"></script>
+        <script type ="text/javascript" src ="libraries/Project1.js"></script>
+        
+    </head>
+    <body>
+        <a href="index.html">Search registrations</a>
+        <a href="attendee.html">Register Attendee</a>
+        <br>
+        
+        <form name ="searchForm" id ="searchForm">
+            <fieldset>
+                
+                 <br>First name: <input type="text" name="firstname" id ="firstname" class="inputfields"><br>
+                 Last name: <input type="text" name="lastname" id = "lastname"  class="inputfields"><br>
+                 How your name will be displayed: <input type="text" name="displayname" id ="displayname"><br>
+                 Select Your Session:
+                <select name="session" id="session">
+                    
+                    <option value="1">Session 1</option>
+                    <option value="2">Session 2</option>
+                    <option value="3">Session 3</option>
+                    <option value="4">Session 4</option>
+                    
+                </select> <br>
+                
+                <input type="button" value="Submit" onclick="Project1.submitRegForm();"> <br>
+                
+            </fieldset>
+           
+        </form>
+        
+        <p id = "outputparagraph"></p>
+        
+        <div id="output"></div>
+        
+      <script type="text/javascript">
+          
+         Project1.init();
+         $('.inputfields').change( Project1.changeField );
+         
+      </script>
+        
+    </body>
+</html>

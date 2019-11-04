@@ -4,6 +4,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -27,7 +28,9 @@ public class Database {
             conn = ds.getConnection();
             
         }        
-        catch (Exception e) { e.printStackTrace(); }
+        catch (Exception e) { 
+            e.printStackTrace();
+        }
         
         return conn;
 
@@ -132,5 +135,45 @@ public class Database {
         return table;
         
     } // End getResultSetTable()
+    
+    public String register(String firstname, String lastname, String displayname, int sessionid) throws SQLException {
+     
+        Connection conn = getConnection();
+        JSONObject json = new JSONObject();
+        String jsonString = "";
+        int key = 0;
+        
+        try {
+
+            String query = "INSERT INTO registrations(firstname, lastname, displayname, sessionid) VALUES(?,?,?,?)";
+
+            PreparedStatement pstatement = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+            pstatement.setString(1, firstname);
+            pstatement.setString(2, lastname);
+            pstatement.setString(3, displayname);
+            pstatement.setInt(4, sessionid);
+
+            int result = pstatement.executeUpdate();
+
+            if(result == 1) {
+                ResultSet keys = pstatement.getGeneratedKeys();
+                if(keys.next())
+                    key = keys.getInt(1);
+            }
+            
+            json.put("displayname", displayname);
+            String registrationNumber = String.format("%06d", key);
+            
+            json.put("sessionid", ("R" + registrationNumber));
+            
+            jsonString = JSONValue.toJSONString(json);
+        } 
+        
+        catch(SQLException e) {
+            System.err.println(e);
+        }
+           
+        return jsonString.trim();
+    }
     
 }
